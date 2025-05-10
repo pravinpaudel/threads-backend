@@ -8,7 +8,24 @@ const queries = {
         }
         console.log("User token generated successfully");
         return token;
+    },
+
+    // The 3rd argument is the context. The context is an object that contains information about the request. It can be used to pass data to the resolvers.
+    // The context is created for every request. It can be used to pass data to the resolvers.
+    getCurrentLoggedInUser: async (_: any, parameters : any, context: any) => {
+        console.log("Context: ", context);
+        const user = context.user;
+        if(!user) {
+            throw new Error("User not authenticated");
+        }
+        const userObj = await UserService.getUserById(user.id);
+        if(!userObj) {
+            throw new Error("User not found");
+        }
+        return userObj;
     }
+
+
 };
 
 const mutations = { 

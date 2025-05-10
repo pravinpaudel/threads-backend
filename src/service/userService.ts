@@ -58,5 +58,22 @@ export class UserService {
         return token;
     }
 
+    public static decodeToken(token: string) {
+        try {
+            const decoded = JWT.verify(token, process.env.JWT_SECRET as string);
+            return decoded;
+        } catch (error) {
+            console.error("Invalid token:", error);
+            return null;
+        }
+    }
+    
+    public static getUserById(id: string) {
+        return prismaClient.user.findUnique({
+            where: {
+                id: id
+            }
+        })
+    }
 }
 
