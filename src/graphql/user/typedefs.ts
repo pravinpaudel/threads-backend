@@ -5,5 +5,6 @@ export const typeDefs = `#graphql
         lastName: String
         email: String!
         profileImage: String
+        threads: [Thread]
     }
 `;

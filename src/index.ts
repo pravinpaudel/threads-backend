@@ -20,6 +20,8 @@ async function startServer() {
                     // Assuming the token is in the format "Bearer <token>"
                     // Returns the user payload if the token is valid
                     const user = UserService.decodeToken(token);
+                    
+                    // It'll attach the user as a property to the context object
                     return { user };
                 } catch (error) {
                     console.error('Invalid token:', error);

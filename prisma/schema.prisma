@@ -23,5 +23,28 @@ model User {
   password String 
   salt String
 
+  // A user can have multiple threads
+  threads Thread[] @relation("UserThreads") // Define relation back to threads (All together will create a bidirectional relation User <-> Thread). The name of the relationship is UserThreads
+
   @@map("users")
+}
+
+model Thread {
+  id String @id @default(uuid())
+  content String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String @map("user_id")
+  // Will create a bidirectional relation. Both relations MUST use the same name for bidirectional relationships
+  user User @relation("UserThreads", fields: [userId], references: [id]) // userId → This is the foreign key that stores the User's id. references: [id] → This tells Prisma that userId references the id field in the User model.
+
+  parentThreadId String? @map("parent_thread_id") //For replies
+  parentThread Thread? @relation("ThreadReplies", fields: [parentThreadId], references: [id])
+  replies Thread[] @relation("ThreadReplies") // Reverse relation. Helps to establish bidirectional relationship btw a thread and its reply
+
+  likesCount Int @default(0)
+  isPublic Boolean @default(true)
+
+  @@map("threads")
 }

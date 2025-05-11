@@ -35,7 +35,7 @@ const mutations = {
             throw new Error("User creation failed");
         }
         console.log("User created successfully");
-        return response.id;
+        return UserService.getUserToken({email: payload.email, password: payload.password});
     },
 
 }
